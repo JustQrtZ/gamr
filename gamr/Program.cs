@@ -59,7 +59,7 @@ namespace gamr
             rng.GetBytes(key);
             byte[] bytes = BitConverter.GetBytes(msg);
             var hash = new HMACSHA256(key);
-            return new string[] {Convert.ToHexString(hash.ComputeHash(BitConverter.GetBytes(msg))),""+msg, Convert.ToHexString(key), Convert.ToHexString(bytes)};
+            return new[] {Convert.ToHexString(hash.ComputeHash(BitConverter.GetBytes(msg))),""+msg, Convert.ToHexString(key), Convert.ToHexString(bytes)};
         }
 
         public static bool Winer(int pchose, string cchose, string[] arr)
