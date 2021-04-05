@@ -40,7 +40,7 @@ namespace gamr
                     break;
             }
             
-            Console.WriteLine("Your move: " + args[chose-1] + "\nComp move: "+args[Convert.ToInt32(comp[1])]);
+            Console.WriteLine("Your move: " + args[chose-1] + "\nComp move: "+args[Convert.ToInt32(comp[1])] + "  HEX: "+comp[3]);
             Console.WriteLine( chose switch
                 {
                     _ when chose-1 == Convert.ToInt32(comp[1]) => "draw",
@@ -59,7 +59,7 @@ namespace gamr
             rng.GetBytes(key);
             byte[] bytes = BitConverter.GetBytes(msg);
             var hash = new HMACSHA256(key);
-            return new string[] {Convert.ToHexString(hash.ComputeHash(BitConverter.GetBytes(msg))),""+msg, Convert.ToHexString(key)};
+            return new string[] {Convert.ToHexString(hash.ComputeHash(BitConverter.GetBytes(msg))),""+msg, Convert.ToHexString(key), Convert.ToHexString(bytes)};
         }
 
         public static bool Winer(int pchose, string cchose, string[] arr)
