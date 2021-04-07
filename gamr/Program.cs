@@ -44,7 +44,7 @@ namespace gamr
             Console.WriteLine( chose switch
                 {
                     _ when chose-1 == Convert.ToInt32(comp[1]) => "draw",
-                    _ when Winer(chose, args[Convert.ToInt32(comp[1])], args) => "Player is win",
+                    _ when IsWiner(chose, args[Convert.ToInt32(comp[1])], args) => "Player is win",
                     _ => "Player is lose"
                 }
             );
@@ -57,21 +57,20 @@ namespace gamr
             byte[] key = new byte[16];
             var rng = new RNGCryptoServiceProvider();
             rng.GetBytes(key);
-            byte[] bytes = BitConverter.GetBytes(msg);
             var hash = new HMACSHA256(key);
-            return new[] {Convert.ToHexString(hash.ComputeHash(BitConverter.GetBytes(msg))),""+msg, Convert.ToHexString(key), Convert.ToHexString(bytes)};
+            return new[] {Convert.ToHexString(hash.ComputeHash(BitConverter.GetBytes(msg))),""+msg, Convert.ToHexString(key), Convert.ToHexString(BitConverter.GetBytes(msg))};
         }
 
-        public static bool Winer(int pchose, string cchose, string[] arr)
+        private static bool IsWiner(int pChose, string cChose, string[] argsArr)
         {
-            List<string> warr = new List<string>();
-            for (int i = pchose, j = 0; j < arr.Length/2;i++, j++)
+            List<string> winnerElectionsList = new List<string>();
+            for (int i = pChose, j = 0; j < argsArr.Length/2;i++, j++)
             {
-                if (i >= arr.Length)
+                if (i >= argsArr.Length)
                     i = 0;
-                warr.Add(arr[i]);
+                winnerElectionsList.Add(argsArr[i]);
             }
-            return warr.OfType<string>().Any(x => x.Equals(cchose));
+            return winnerElectionsList.Any(x => x.Equals(cChose));
         }
     }
 }
