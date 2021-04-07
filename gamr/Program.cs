@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 
 namespace gamr
 {
-    class Program
+    internal static class Program
     {
         static void Main(string[] args)
         {
@@ -20,8 +20,9 @@ namespace gamr
                 Console.WriteLine("You need to enter an odd number of items >=3,\ngamr paper rock scissors");
                 return;
             }
-            string[] comp = Comp(args.Length);
-            Console.WriteLine($"HMAC: {comp[0]}");
+            
+            var compData = Comp(args.Length);
+            Console.WriteLine($"HMAC: {compData[0]}");
             for (int i = 0; i < args.Length; i++)
             {
                 Console.WriteLine($"{i+1} - {args[i]}");
@@ -40,17 +41,18 @@ namespace gamr
                     break;
             }
             
-            Console.WriteLine("Your move: " + args[chose-1] + "\nComp move: "+args[Convert.ToInt32(comp[1])] + "  HEX: "+comp[3]);
+            Console.WriteLine("Your move: " + args[chose-1] + "\nComp move: "+args[Convert.ToInt32(compData[1])] + "  HEX: "+compData[3]);
             Console.WriteLine( chose switch
                 {
-                    _ when chose-1 == Convert.ToInt32(comp[1]) => "draw",
-                    _ when IsWiner(chose, args[Convert.ToInt32(comp[1])], args) => "Player is win",
+                    _ when chose-1 == Convert.ToInt32(compData[1]) => "draw",
+                    _ when IsWinner(chose, args[Convert.ToInt32(compData[1])], args) => "Player is win",
                     _ => "Player is lose"
                 }
             );
-            Console.WriteLine($"HMAC key: {comp[2]}");
+            Console.WriteLine($"HMAC key: {compData[2]}");
         }
-        public static string[] Comp(int len)
+
+        private static string[] Comp(int len)
         {
             Random r = new Random();
             int msg = r.Next(1, len);
@@ -61,7 +63,7 @@ namespace gamr
             return new[] {Convert.ToHexString(hash.ComputeHash(BitConverter.GetBytes(msg))),""+msg, Convert.ToHexString(key), Convert.ToHexString(BitConverter.GetBytes(msg))};
         }
 
-        private static bool IsWiner(int pChose, string cChose, string[] argsArr)
+        private static bool IsWinner(int pChose, string cChose, string[] argsArr)
         {
             List<string> winnerElectionsList = new List<string>();
             for (int i = pChose, j = 0; j < argsArr.Length/2;i++, j++)
